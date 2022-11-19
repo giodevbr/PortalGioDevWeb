@@ -67,6 +67,9 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "port": 5000
+          },
           "configurations": {
             "production": {
               "browserTarget": "PortalGioDevWeb:build:production"
@@ -103,5 +106,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "c33652a0-dded-4f3d-a5dd-833ae33c9201"
   }
 }
