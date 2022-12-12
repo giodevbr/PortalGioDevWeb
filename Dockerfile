@@ -1,19 +1,9 @@
-FROM node:18.12.1 AS builder
-
-EXPOSE 5000/tcp
-
+FROM node:latest as node
 WORKDIR /app
-
-COPY package.json /app/
-
-COPY package-lock.json /home/app/
-
-# RUN npm ci
-
-COPY . .
-
-RUN npm run build
-
-FROM nginx:ubuntu-latest
-COPY --from=builder /app/build /usr/share/nginx/html
-COPY nginx.default.conf /etc/nginx/conf.d/default.conf
+COPY package*.json /app/
+RUN npm install
+COPY ./ /app/
+RUN npm run build -- --output-path=./dist/out --configuration production
+FROM nginx:latest
+COPY --from=node /app/dist/out/ /usr/share/nginx/html
+COPY ./nginx-configuration.conf /etc/nginx/conf.d/default.conf
